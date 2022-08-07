@@ -45,7 +45,18 @@ puts "#{average_sentences_per_graph} sentences per paragraph in average"
 average_words_per_sentence = total_words / total_sentences
 puts "#{average_words_per_sentence} words per sentence in average"
 
-# 9. ruby独有字符串自动数组化方式 %w{}
+# 9. ruby独有字符串自动数组化方式 %w{}, 如果字符串之间以空格隔开, 能直接数组化
 # 下方输出为 ["the", "a", "by", "on", "for", "of", "are", "with", "just", "but", "and", "to", "the", "my", "I", "has", "some", "in"]
 stopwords = %w{the a by on for of are with just but and to the my I has
 some in}
+
+# 10. 输出没有包含在字符串数组里的字符串
+text = %q{Los Angeles has some of the nicest weather in the country.}
+stopwords = %w{the a by on for of are with just but and to the my in I has
+some}
+words = text.scan(/\w+/)
+keywords = words.select { |word| !stopwords.include?(word) }
+puts keywords.join(' ')
+
+# 11. 计算百分比, 先转成浮点数, 算完了再转成整数, 提升精度
+((keywords.length.to_f / words.length.to_f) * 100).to_i
