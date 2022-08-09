@@ -1,0 +1,9 @@
+class Employee
+  attr_reader name: String
+  attr_reader security_level: Integer
+  attr_reader email_addresses: Array[String]
+
+  def initialize: (name: String, security_level: Integer) -> void
+
+  def access_granted?: (level: Integer) -> bool
+end

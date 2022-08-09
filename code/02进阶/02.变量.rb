@@ -24,7 +24,31 @@ class Square
     end
   end
 
+  # 
   def self.count
     @@number_of_squares
   end
 end
+
+a = Square.new
+b = Square.new
+
+puts Square.count # 2
+
+# 类方法VS成员方法
+class Square2
+  def self.test_method
+    puts "hello from the square class"
+  end
+
+  def test_method
+    puts "hello from instance"
+  end
+end
+
+c = Square2.new
+
+# hello from instance
+puts c.test_method 
+# hello from the square class
+puts Square2.test_method
