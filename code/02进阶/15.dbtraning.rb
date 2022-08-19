@@ -37,6 +37,21 @@ laura = Person.new
 laura.name = "Laura"
 laura.age = 15
 
+# create a pstore file
 require 'pstore'
 store = PStore.new('storagefile')
-# store.
+store.transaction do
+  store[:people] ||= Array.new
+  store[:people] << fred
+  store[:people] << laura
+end
+
+# load a pstore file
+people3 = []
+store.transaction do
+  people3 = store[:people]
+end
+
+people3.each {|item| puts item.name}
+# Fred
+# Laura
