@@ -52,6 +52,39 @@ store.transaction do
   people3 = store[:people]
 end
 
-people3.each {|item| puts item.name}
+# people3.each {|item| puts item.name}
 # Fred
 # Laura
+
+
+# yaml
+
+require 'yaml'
+test_data = [fred, laura]
+puts test_data.to_yaml
+#- !ruby/object:Person
+#   name: Fred
+#   age: 12
+# - !ruby/object:Person
+#   name: Laura
+#   age: 15
+
+yaml_string = <<DATA
+- !ruby/object:Person
+  name: Fred
+  age: 12
+- !ruby/object:Person
+  name: Laura
+  age: 15
+DATA
+
+test_data2 = YAML.load(yaml_string)
+puts test_data2[0].name # Fred
+puts test_data2[1].name # Laura
+
+
+# sqlite
+
+require 'sqlite3'
+
+puts 'Ok, Running on sqlite3' if defined? (SQLite3::Database)
