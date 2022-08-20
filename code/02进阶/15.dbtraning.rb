@@ -30,11 +30,11 @@ class Person
 end
 
 fred = Person.new
-fred.name = "Fred"
+fred.name = 'Fred'
 fred.age = 12
 
 laura = Person.new
-laura.name = "Laura"
+laura.name = 'Laura'
 laura.age = 15
 
 # create a pstore file
@@ -86,5 +86,84 @@ puts test_data2[1].name # Laura
 # sqlite
 
 require 'sqlite3'
+# puts 'Ok, Running on sqlite3' if defined? (SQLite3::Database)
+# 创建一个全局的sqlite数据库， $即全局
+$db = SQLite3::Database.new('dbfile')
+# 返回数据用hash来装
+$db.results_as_hash = true
 
-puts 'Ok, Running on sqlite3' if defined? (SQLite3::Database)
+def disconnect_and_quit
+  $db.close
+  puts 'Bye!'
+  exit
+end
+
+def create_people_table
+  puts 'create people table'
+  $db.execute '
+    CREATE TABLE people (
+    id integer primary key,
+    name varchar(50),
+    job varchar(50),
+    gender varchar(50),
+    age integer)
+'
+end
+
+def add_a_person
+  puts 'Enter name:'
+  name = gets.chomp
+  puts 'Enter job:'
+  job = gets.chomp
+  puts 'Enter gender:'
+  gender = gets.chomp
+  puts 'Enter age:'
+  age = gets.chomp
+  $db.execute('
+    INSERT INTO people (name, job, gender, age)
+    VALUES (?, ?, ?, ?);
+', name, job, gender, age)
+end
+
+def find_a_person
+  puts 'enter name or id of person to find:'
+  id = gets.chomp
+  person = $db.execute('select * from people where name = ? or id = ?', id, id.to_i).first
+
+  # if no result returned
+  unless person
+    puts 'No result found'
+    return
+  end
+
+  puts %Q{Name: #{person['name']}
+  Job: #{person['job']}
+  Gender: #{person['gender']}
+  Age: #{person['age']}}
+end
+
+# create_people_table
+# add_a_person
+# find_a_person
+
+# build a simple interactive db cli
+loop do
+  puts %q{Please select an option:
+    1. Create people table
+    2. Add a person
+    3. Look for a person
+    4. Quit
+}
+  case gets.chomp
+  when '1'
+    create_people_table
+  when '2'
+    add_a_person
+  when '3'
+    find_a_person
+  when '4'
+    disconnect_and_quit
+  else
+    puts 'nothing'
+  end
+end
