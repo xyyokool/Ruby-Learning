@@ -147,23 +147,47 @@ end
 # find_a_person
 
 # build a simple interactive db cli
-loop do
-  puts %q{Please select an option:
-    1. Create people table
-    2. Add a person
-    3. Look for a person
-    4. Quit
-}
-  case gets.chomp
-  when '1'
-    create_people_table
-  when '2'
-    add_a_person
-  when '3'
-    find_a_person
-  when '4'
-    disconnect_and_quit
-  else
-    puts 'nothing'
-  end
+# loop do
+#   puts %q{Please select an option:
+#     1. Create people table
+#     2. Add a person
+#     3. Look for a person
+#     4. Quit
+# }
+#   case gets.chomp
+#   when '1'
+#     create_people_table
+#   when '2'
+#     add_a_person
+#   when '3'
+#     find_a_person
+#   when '4'
+#     disconnect_and_quit
+#   else
+#     puts 'nothing'
+#   end
+# end
+
+# use sequel to connect with pg
+
+require 'sequel'
+require 'pg'
+
+DB = Sequel.connect('postgres://stanyang:123456@localhost/stanyang')
+# 如果没有postgreSql的话， 可以用 DB = Sequel.sqlite来连接sqlite
+
+DB.create_table :people do
+  primary_key :id
+  String :first_name
+  String :last_name
+  Integer :age
 end
+
+people = DB[:people]
+people.insert(:first_name => "Fred", :last_name => "Bloggs", :age => 32)
+puts "There are #{people.count} people in the db"
+
+people.each {|person| puts person[:first_name]}
+
+DB.fetch("select * from people") {|row| puts row[:first_name] }
+
