@@ -50,7 +50,7 @@ end
 puts "abc".length
 
 # 4. example4 reflection methods
-a = "This is a test"
+a = "This is a spec"
 puts a.methods.join(' ')
 puts Child.new.methods.join(' ')
 
