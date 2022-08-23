@@ -32,24 +32,53 @@ person.age = 21
 puts "#{person.name} is #{person.age}" # Stan is 21
 
 # 例子2
-class Class
-  def add_accessor(accessor_name)
-    self.class_eval %{
-    attr_accessor :#{accessor_name}
-                    }
+# class Class
+#   def add_accessor(accessor_name)
+#     self.class_eval %{
+#     attr_accessor :#{accessor_name}
+#                     }
+#   end
+# end
+#
+# class Teacher
+# end
+#
+# teacher = Teacher.new
+# teacher.add_accessor :name
+# teacher.add_accessor :age
+# teacher.name = "Linda"
+# teacher.age = 12
+# puts "#{teacher.name} + #{teacher.age}"
+
+# instance_eval
+class MyClass
+  def initialize
+    @my_variable = 'Hello, world!'
   end
 end
 
-class Teacher
+obj = MyClass.new
+obj.instance_eval {puts @my_variable} # hello world
+
+# my_own_attr_accessor
+
+class Class
+  def holy_accessor(accessor_name)
+    self.class_eval %{
+      def #{accessor_name}
+        @#{accessor_name}
+      end
+      def #{accessor_name} = (value)
+        @#{accessor_name} = value
+      end
+     }
+  end
 end
 
-teacher = Teacher.new
-teacher.add_accessor :name
-teacher.add_accessor :age
-teacher.name = "Linda"
-teacher.age = 12
-puts "#{teacher.name} + #{teacher.age}"
+class Sheep
+  holy_accessor :name
+end
 
-# module_eval
-
-# instance_eval
+bbb = Sheep.new
+bbb.name = "aaa"
+puts bbb
