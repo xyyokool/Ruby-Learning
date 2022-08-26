@@ -12,3 +12,14 @@ end
 threads.each do |thread|
   puts "Thread #{thread.object_id} didn't finish in 1s" unless thread.join(1)
 end
+
+sg = Fiber.new do
+  s = 0
+  loop do
+    square = s * s
+    Fiber.yield square
+    s += 1
+  end
+end
+
+10.times {puts sg.resume}
