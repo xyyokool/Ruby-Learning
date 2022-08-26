@@ -8,4 +8,7 @@ threads = []
   threads << thread
 end
 
-threads.each {|thread| thread.join}
+# threads.each {|thread| thread.join}
+threads.each do |thread|
+  puts "Thread #{thread.object_id} didn't finish in 1s" unless thread.join(1)
+end
