@@ -51,3 +51,58 @@ Net::HTTP.start(url.host, url.port) do |http|
   req.basic_auth('test','test')
   puts http.request(req).body
 end
+
+# 5. HTML解析
+
+require 'nokogiri'
+
+# fake html
+html = <<END_OF_HTML
+<html>
+<head>
+<title>This is the page title</title>
+</head>
+<body>
+<h1>Big heading!</h1>
+<p>A paragraph of text.</p>
+<ul><li>Item 1 in a list</li><li>Item 2</li><li class="highlighted">Item
+3</li></ul>
+</body>
+</html>
+END_OF_HTML
+
+body = Nokogiri::HTML(html)
+puts body.css("h1").first.inner_html # Big heading!
+
+# 6. open-uri + nokogiri
+
+# require 'open-uri'
+#
+# doc = Nokogiri::HTML(URI.open('https://www.apress.com/us/about'))
+# puts doc.css("h1").first.inner_html
+
+# 7. json解析
+
+require 'json'
+
+json = <<END_JSON
+[
+  {
+    "name": "Peter Cooper",
+    "gender": "Male"
+}, {
+    "name": "Carleton DiLeo",
+    "gender": "Male"
+  }
+]
+END_JSON
+
+# symbolize_names: 开启key symbol化
+data = JSON.parse(json, symbolize_names: true)
+
+data.each do |person|
+  puts "#{person[:name]} : #{person[:gender]}"
+end
+
+# Peter Cooper : Male
+# Carleton DiLeo : Male
