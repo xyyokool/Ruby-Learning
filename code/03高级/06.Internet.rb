@@ -106,3 +106,14 @@ end
 
 # Peter Cooper : Male
 # Carleton DiLeo : Male
+
+require 'net/ftp'
+require 'uri'
+
+uri = URI.parse("ftp://cdimage.debian.org/debian-cd/current'")
+
+Net::FTP.open(uri.host) do |ftp|
+  ftp.login 'anonymous', 'me@privacy.net'
+  ftp.passive = true
+  ftp.list(uri.path) {|path| puts path}
+end
