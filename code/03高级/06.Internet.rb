@@ -107,13 +107,20 @@ end
 # Peter Cooper : Male
 # Carleton DiLeo : Male
 
-require 'net/ftp'
-require 'uri'
+# require 'net/ftp'
+# require 'uri'
+#
+# uri = URI.parse("ftp://cdimage.debian.org/debian-cd/current'")
+#
+# Net::FTP.open(uri.host) do |ftp|
+#   ftp.login 'anonymous', 'me@privacy.net'
+#   ftp.passive = true
+#   ftp.list(uri.path) {|path| puts path}
+# end
 
-uri = URI.parse("ftp://cdimage.debian.org/debian-cd/current'")
+# resolve
+require 'resolv'
 
-Net::FTP.open(uri.host) do |ftp|
-  ftp.login 'anonymous', 'me@privacy.net'
-  ftp.passive = true
-  ftp.list(uri.path) {|path| puts path}
-end
+puts Resolv.getaddress("www.baidu.com")
+puts Resolv.getname("180.101.49.12")
+# 180.101.49.11
