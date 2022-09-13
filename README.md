@@ -1,5 +1,5 @@
-# Ruby-Learning
-Newbees to play with ruby
+# Ruby-playing
+NB to play with ruby
 
 ## Resources
 
